@@ -30,6 +30,7 @@ The AarOS program starts with cell 1 and upper-left corner. The program can be t
 * Everything else - NO-OP.
 
 # Changelog
+* 1.0 - Release.
 * 0.0 - Started this git.
 * P1.1 - Added commands and first digraph commands
 * P1.0 - Initial plan.
