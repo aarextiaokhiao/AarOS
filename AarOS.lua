@@ -1,5 +1,5 @@
 --[[
-AarOS Interperter 1.0.1
+AarOS Interperter 1.0.1.1
 Created by Aarex
 
 Read the readme.md for all of the commands.
