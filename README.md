@@ -16,10 +16,10 @@ The AarOS program starts with cell 1 and upper-left corner. The program can be t
 * \\* - Start of string literal.
 * *\\ - End of string literal. Same as " did.
 * A - Pop the next cell and add with the current cell.
-* M - Pop the next cell and subtract with the current cell.
+* M - Pop the next cell and subtract by it from the current cell.
 * P - Pop the next cell and multiply with the current cell.
-* D - Pop the next cell and divide by it from the current cell.
-* / - Pop the next cell and modulus by it from the current cell.
+* D - Pop the next cell and divide by it from the current cell. Doesn't work if the next cell is 0.
+* / - Pop the next cell and modulus by it from the current cell. Doesn't work if the next cell is 0.
 * S - Skip a next command.
 * I - If the current cell is not 0, then skip a next command.
 * . - Input to the cell from a character.
@@ -29,7 +29,10 @@ The AarOS program starts with cell 1 and upper-left corner. The program can be t
 * @ - End program.
 * Everything else - NO-OP.
 
+# Flags
+
 # Changelog
+* 1.0.1 - Added @ command. Added 2 new flags including -d and -v and also, added examples.
 * 1.0 - Release.
 * 0.0 - Started this git.
 * P1.1 - Added commands and first digraph commands

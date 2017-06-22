@@ -1,11 +1,8 @@
 --[[
-AarOS Interperter 1.0
+AarOS Interperter 1.0.1
 Created by Aarex
 
 Read the readme.md for all of the commands.
-
-TO DO:
-Debug mode
 ]]--
 
 -- Main variables
@@ -25,6 +22,20 @@ function move()
   xPosition = xPosition-1
  elseif direction == 3 then -- up
   yPosition = yPosition-1
+ end
+end
+
+-- Variables from arugments
+debug = false
+verbose = false
+
+-- Arugments
+for _,flag in ipairs(arg) do
+ if flag == '-d' then
+  debug = true
+ end
+ if flag == '-v' then
+  verbose = true
  end
 end
 
@@ -53,23 +64,24 @@ while true do
   xSize = lineLength
  end
 end
---print('X Size: '..xSize..', Y Size: '..ySize)
 
 -- Preparation
 stringMode = 0
 input = arg[1]
-debug = 0
-
--- Arugments
--- Coming soon!
 
 -- Run
 while true do
  if not (0 < xPosition and xSize+1 > xPosition and 0 < yPosition and ySize+1 > yPosition) then
   break
  end
+ if memory[memoryPosition] == nil then
+  memory[memoryPosition] = 0
+ end
+ if memory[memoryPosition+1] == nil then
+  memory[memoryPosition+1] = 0
+ end
  local command = getCharacterFromLocation(lines[yPosition],xPosition)
- --print('Command: '..command..', X: '..xPosition..', Y: '..yPosition..', Direction: '..direction)
+ if verbose then print('Command: '..command..', X: '..xPosition..', Y: '..yPosition..', Direction: '..direction) end
  if not (command==nil) then
   if stringMode == 0 then -- Main commands
    if command=='+' then -- Increase cell
@@ -100,8 +112,10 @@ while true do
     memory[memoryPosition] = memory[memoryPosition]*memory[memoryPosition+1]
     memory[memoryPosition+1] = 0
    elseif command=='D' then -- Pop the next cell and divide the current cell by it.
-    memory[memoryPosition] = memory[memoryPosition]/memory[memoryPosition+1]
-    memory[memoryPosition+1] = 0
+    if not (memory[memoryPosition+1]==0) then
+     memory[memoryPosition] = memory[memoryPosition] / memory[memoryPosition+1]
+     memory[memoryPosition+1] = 0
+    end
    elseif command=='S' then -- Skip the next command.
     move()
    elseif command=='I' then -- If the current cell is not 0, then skip a next command.
@@ -136,8 +150,12 @@ while true do
     output = output..memory[memoryPosition]
     memory[memoryPosition] = 0
    elseif command=='/' then -- Pop the next cell and 'mod' the current cell by it.
-    memory[memoryPosition] = memory[memoryPosition] % memory[memoryPosition+1]
-    memory[memoryPosition+1] = 0
+    if not (memory[memoryPosition+1]==0) then
+     memory[memoryPosition] = memory[memoryPosition] % memory[memoryPosition+1]
+     memory[memoryPosition+1] = 0
+    end
+   elseif command=='@' then -- End program
+    break
    end
   elseif stringMode == 1 then -- Simple string literal
    if command=='\'' then -- End string literal
@@ -165,11 +183,26 @@ while true do
    end
   end
  end
- if memory[memoryPosition] == nil then
-  memory[memoryPosition] = 0
- end
  move()
- --print('Mode: '..stringMode..', Memory: '..memory[memoryPosition]..', Position: '..memoryPosition)
+ if verbose then print('Mode: '..stringMode..', Memory: '..memory[memoryPosition]..', Position: '..memoryPosition) end
+end
+
+if debug then
+ if verbose then print() end
+ print('X Size: '..xSize..', Y Size: '..ySize)
+ print('Final position: ('..xPosition..','..yPosition..')')
+ local dirNames = {"Right","Down","Left","Up"}
+ print('Final direction: '..dirNames[direction+1])
+ print('Memory: ')
+ mem = ''
+ for _,num in ipairs(memory) do
+  mem = mem..num..','
+ end
+ mem = string.sub(mem,1,string.len(mem)-1)
+ print(mem)
+ print('Output: ')
+elseif verbose then
+ print()
 end
 
 io.write(output)
