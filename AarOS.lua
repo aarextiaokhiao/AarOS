@@ -1,5 +1,5 @@
 --[[
-AarOS Interpreter 1.1
+AarOS Interpreter 1.1.1
 AarOS Version Interpreted: 1.1.1
 Created by Aarex
 
@@ -166,9 +166,9 @@ while true do
     end
    elseif command=='@' then -- End program
     break
-   elseif (version < 3 and command=='\'') or (version > 2 and command=='\"') then -- Start the simple string literal.
+   elseif version > 1 and (version < 3 and command=='\'') or (version > 2 and command=='\"') then -- Start the simple string literal.
     stringMode = 1
-   elseif command=='\\' then
+   elseif version > 1 and command=='\\' then
     move()
     command = getCharacterFromLocation(lines[yPosition],xPosition)
     if command=='*' then -- Start the complex string literal.
@@ -178,14 +178,14 @@ while true do
      move()
      direction = (direction+2)%4
     end
-   elseif command=='&' then -- Remove the current cell.
+   elseif version > 1 and command=='&' then -- Remove the current cell.
     table.remove(memory,memoryPosition)
-   elseif command=='%' then -- Pop a current cell, then output it as a number.
+   elseif version > 1 and command=='%' then -- Pop a current cell, then output it as a number.
     output = output..memory[memoryPosition]
     if version > 2 then
      memory[memoryPosition] = 0
     end
-   elseif command=='/' then -- Pop the next cell and 'mod' the current cell by it.
+   elseif version > 1 and command=='/' then -- Pop the next cell and 'mod' the current cell by it.
     if not (memory[memoryPosition+1]==0) then
      memory[memoryPosition] = memory[memoryPosition] % memory[memoryPosition+1]
      memory[memoryPosition+1] = 0

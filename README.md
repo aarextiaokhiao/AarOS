@@ -36,7 +36,8 @@ The AarOS program starts with cell 1 and upper-left corner. The program can be t
 * -r (Run in different mode.)
 
 # Changelog
-* 1.1 - Added 2 new flags including -h and -r. Replaced \' with \". Fixed 1.0.1.1 update log
+* 1.1.1 - Fixed/golfed examples. Added documentation. Fixed running in 1.0. Fixed 1.1 changelog.
+* 1.1 - Added 2 new flags including -h and -r. Replaced \' with \". Added 1 example. Fixed 1.0.1.1 update log.
 * 1.0.1.1 - Added how to use flags.
 * 1.0.1 - Added @ command. Added 2 new flags including -d and -v and also, added examples.
 * 1.0 - Release.
