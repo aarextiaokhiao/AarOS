@@ -30,11 +30,14 @@ The AarOS program starts with cell 1 and upper-left corner. The program can be t
 * Everything else - NO-OP.
 
 # Flags
+* -h (Help to use flags)
 * -d (Debug mode, show the results of the program.)
 * -v (Verbose mode, show the current status each step.)
+* -r (Run in different mode.)
 
 # Changelog
-* 1.0.1a - Added how to use flags.
+* 1.1 - Added 2 new flags including -h and -r. Replaced \' with \". Fixed 1.0.1.1 update log
+* 1.0.1.1 - Added how to use flags.
 * 1.0.1 - Added @ command. Added 2 new flags including -d and -v and also, added examples.
 * 1.0 - Release.
 * 0.0 - Started this git.

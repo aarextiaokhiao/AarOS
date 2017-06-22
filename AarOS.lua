@@ -1,5 +1,6 @@
 --[[
-AarOS Interperter 1.0.1.1
+AarOS Interpreter 1.1
+AarOS Version Interpreted: 1.1.1
 Created by Aarex
 
 Read the readme.md for all of the commands.
@@ -28,14 +29,39 @@ end
 -- Variables from arugments
 debug = false
 verbose = false
+version = 3
 
 -- Arugments
 for _,flag in ipairs(arg) do
- if flag == '-d' then
+ if string.sub(flag,1,2) == '-h' then
+  print('Help:')
+  print('-d: Debug mode')
+  print('-v: Verbose mode')
+  print('-r: Run in different versions')
+ end
+ if string.sub(flag,1,2) == '-d' then
   debug = true
  end
- if flag == '-v' then
+ if string.sub(flag,1,2) == '-v' then
   verbose = true
+ end
+ if string.sub(flag,1,2) == '-r' then
+  if string.sub(flag,3,3) == nil then -- No given version
+   print('Help:')
+   print('-r 1.0: Run in version 1.1')
+   print('-r 1.1: Run in version 1.1')
+   print('-r 1.1.1: Run in version 1.1.1')
+   os.exit()
+  elseif string.sub(flag,4) == '1.0' then -- Pre-development version
+   version = 1
+  elseif string.sub(flag,4) == '1.1' then  -- First release version
+   version = 2
+  elseif string.sub(flag,4) == '1.1.1' then
+   version = 3
+  else
+   print('Wrong version!')
+   os.exit()
+  end
  end
 end
 
@@ -106,7 +132,11 @@ while true do
     memory[memoryPosition] = memory[memoryPosition]+memory[memoryPosition+1]
     memory[memoryPosition+1] = 0
    elseif command=='M' then -- Pop the next cell and subtract the current cell by it.
-    memory[memoryPosition] = memory[memoryPosition]-memory[memoryPosition+1]
+    if version < 3 then
+     memory[memoryPosition] = memory[memoryPosition+1]-memory[memoryPosition]
+    else
+     memory[memoryPosition] = memory[memoryPosition]-memory[memoryPosition+1]
+    end
     memory[memoryPosition+1] = 0
    elseif command=='P' then -- Pop the next cell and multiply with the current cell.
     memory[memoryPosition] = memory[memoryPosition]*memory[memoryPosition+1]
@@ -131,8 +161,12 @@ while true do
     end
    elseif command==',' then -- Pop a current cell, then output it as a character.
     output = output..string.char(memory[memoryPosition])
-    memory[memoryPosition] = 0
-   elseif command=='\'' then -- Start the simple string literal.
+    if version > 2 then
+     memory[memoryPosition] = 0
+    end
+   elseif command=='@' then -- End program
+    break
+   elseif (version < 3 and command=='\'') or (version > 2 and command=='\"') then -- Start the simple string literal.
     stringMode = 1
    elseif command=='\\' then
     move()
@@ -148,17 +182,17 @@ while true do
     table.remove(memory,memoryPosition)
    elseif command=='%' then -- Pop a current cell, then output it as a number.
     output = output..memory[memoryPosition]
-    memory[memoryPosition] = 0
+    if version > 2 then
+     memory[memoryPosition] = 0
+    end
    elseif command=='/' then -- Pop the next cell and 'mod' the current cell by it.
     if not (memory[memoryPosition+1]==0) then
      memory[memoryPosition] = memory[memoryPosition] % memory[memoryPosition+1]
      memory[memoryPosition+1] = 0
     end
-   elseif command=='@' then -- End program
-    break
    end
   elseif stringMode == 1 then -- Simple string literal
-   if command=='\'' then -- End string literal
+   if (version < 3 and command=='\'') or (version > 2 and command=='\"') then -- End string literal
     stringMode = 0
    else -- Push character
     memory[memoryPosition] = string.byte(command)
@@ -189,6 +223,8 @@ end
 
 if debug then
  if verbose then print() end
+ local verNames = {"1.0","1.1","1.1.1"}
+ print('Version: '..verNames[version])
  print('X Size: '..xSize..', Y Size: '..ySize)
  print('Final position: ('..xPosition..','..yPosition..')')
  local dirNames = {"Right","Down","Left","Up"}
