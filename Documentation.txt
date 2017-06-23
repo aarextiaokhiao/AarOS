@@ -37,3 +37,24 @@ AarOS 1.1.1
 M - Pop the next cell and subtract by it from the current cell.
 , - Pop a current cell, then output it as a character.
 % - Pop a current cell, then output it as a number.
+
+====================
+AarOS 1.2
+
+It starts at pop mode 1.
+- Mode 1 (Pops the current cell to B, set A as the next cell, then operate it.)
+- Mode 2 (Pops the next cell to B, set A as the current cell, then operate it.)
+
+A - Do A+B when setting in current pop mode.
+M - Do A-B when setting in current pop mode.
+P - Do AB when setting in current pop mode.
+D - Do A/B when setting in current pop mode.
+/ - Do mod(A,B) when setting in current pop mode.
+\ - Change the pop mode.
+' - Number literal. All vaild digits are putted in the memory when reaching the another '.
+E - Do A^B when setting in current pop mode.
+$ - Pop the current cell.
+# - Swap between current and next cells.
+` - Copy the cell to next cell.
+M/ - A mirror you might excepted from /.
+M\ - A mirror you might excepted from \.
